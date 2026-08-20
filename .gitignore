@@ -1,0 +1,6 @@
+node_modules/
+.env
+*.db
+data/
+dist/
+.DS_Store

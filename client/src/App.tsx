@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar'
 import HomePage from '@/pages/HomePage'
 import ChatPage from '@/pages/ChatPage'
 import SharedPackPage from '@/pages/SharedPackPage'
+import NotFoundPage from '@/pages/NotFoundPage'
 import CartSidebar from '@/components/CartSidebar'
 import SettingsDialog from '@/components/SettingsDialog'
 import OnboardingModal from '@/components/OnboardingModal'
@@ -39,9 +40,19 @@ function AppContent() {
   })
   const send = useChatStore((s) => s.send)
 
-  // Global keyboard shortcuts
+  // Update page title on route change
+  const location = useLocation()
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
+    const titles: Record<string, string> = {
+      '/': 'MineSmith — AI Minecraft Modpack Builder',
+      '/chat': 'MineSmith — Chat',
+    }
+    document.title = titles[location.pathname] || 'MineSmith'
+  }, [location.pathname])
+
+  // Global keyboard shortcuts + custom events
+  useEffect(() => {
+    const keyHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         if (settingsOpen) setSettingsOpen(false)
         else if (cartOpen) setCartOpen(false)
@@ -51,8 +62,13 @@ function AppContent() {
         setSettingsOpen(prev => !prev)
       }
     }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
+    const openSettingsHandler = () => setSettingsOpen(true)
+    window.addEventListener('keydown', keyHandler)
+    window.addEventListener('open-settings', openSettingsHandler)
+    return () => {
+      window.removeEventListener('keydown', keyHandler)
+      window.removeEventListener('open-settings', openSettingsHandler)
+    }
   }, [settingsOpen, cartOpen])
 
   return (
@@ -69,6 +85,7 @@ function AppContent() {
           <Route path="/" element={<HomePage onSend={send} />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/pack/:slug" element={<SharedPackPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </PageTransition>
       <Footer />

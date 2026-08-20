@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, User, Send, Layers, AlertTriangle, X, Clock, Trash2, RotateCcw, CheckSquare, Square, MessageSquare, ChevronLeft } from 'lucide-react'
+import { Bot, User, Send, Layers, AlertTriangle, X, Clock, Trash2, RotateCcw, CheckSquare, Square, MessageSquare, ChevronLeft, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,6 +14,7 @@ import ModCard from '@/components/ModCard'
 import Dependencies from '@/components/Dependencies'
 import ConflictWarning from '@/components/ConflictWarning'
 import ThinkingIndicator from '@/components/ThinkingIndicator'
+import { apiBase } from '@/lib/apiBase'
 
 const REFINEMENT_CHIPS = [
   'Add more atmosphere mods',
@@ -26,7 +27,7 @@ const REFINEMENT_CHIPS = [
 
 export default function ChatPage() {
   const {
-    messages, mods, dependencies, loading, analysis, error,
+    messages, mods, dependencies, loading, analysis, error, errorType,
     searchHistory, failedMessageIndex,
     send, retryFailedMessage, restoreHistory, clearError, clearChat, removeFromHistory, clearHistory,
     selectAll, deselectAll,
@@ -35,9 +36,20 @@ export default function ChatPage() {
   const [input, setInput] = useState('')
   const [showHistory, setShowHistory] = useState(false)
   const [mobileView, setMobileView] = useState<'chat' | 'mods'>('chat')
+  const [configOk, setConfigOk] = useState<boolean | null>(null)
   const navigate = useNavigate()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  // Check if AI provider is configured on mount
+  useEffect(() => {
+    fetch(apiBase('/api/settings'))
+      .then(r => r.json())
+      .then(s => {
+        setConfigOk(!!(s.groqApiKey) || s.provider === 'ollama')
+      })
+      .catch(() => setConfigOk(null))
+  }, [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -79,6 +91,7 @@ export default function ChatPage() {
   }
 
   const handleClearChat = () => {
+    if (!window.confirm('Clear this conversation? This cannot be undone.')) return
     clearChat()
     setMobileView('chat')
     toast('Chat cleared', 'info')
@@ -87,6 +100,19 @@ export default function ChatPage() {
   // ===== Chat Panel (shared between mobile & desktop) =====
   const chatPanel = (
     <div className="flex-1 flex flex-col min-h-0 relative">
+      {/* Config Warning */}
+      {configOk === false && (
+        <div
+          className="flex items-center gap-3 px-4 py-2.5 bg-yellow-500/10 border-b border-yellow-500/20 cursor-pointer"
+          onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))}
+        >
+          <Settings className="h-4 w-4 text-yellow-500 shrink-0" />
+          <span className="text-xs text-yellow-500 flex-1">
+            No AI provider configured. <span className="font-bold underline">Open Settings</span> to add a Groq API key or enable Ollama.
+          </span>
+        </div>
+      )}
+
       {/* Error Banner */}
       <AnimatePresence>
         {error && (
@@ -101,14 +127,23 @@ export default function ChatPage() {
             >
               <AlertTriangle className="h-4 w-4 text-destructive shrink-0" />
               <span className="text-sm text-destructive flex-1 cursor-pointer" onClick={clearError}>{error}</span>
-              <button
-                onClick={() => retryFailedMessage()}
-                disabled={loading}
-                className="p-1 text-destructive hover:text-foreground transition-colors cursor-pointer disabled:opacity-40"
-                title="Retry"
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-              </button>
+              {errorType === 'config' ? (
+                <button
+                  onClick={() => { clearError(); window.dispatchEvent(new CustomEvent('open-settings')); }}
+                  className="pixel-btn px-2 py-1 text-[9px] font-bold uppercase text-foreground bg-secondary/50 cursor-pointer flex items-center gap-1"
+                >
+                  <Settings className="h-3 w-3" /> Settings
+                </button>
+              ) : (
+                <button
+                  onClick={() => retryFailedMessage()}
+                  disabled={loading}
+                  className="p-1 text-destructive hover:text-foreground transition-colors cursor-pointer disabled:opacity-40"
+                  title="Retry"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                </button>
+              )}
               <button onClick={clearError} className="p-1 text-destructive hover:text-foreground transition-colors cursor-pointer">
                 <X className="h-3 w-3" />
               </button>
@@ -119,13 +154,13 @@ export default function ChatPage() {
 
       {/* Chat header */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-border/30 shrink-0">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/')}
-            className="h-7 w-7 p-0 gap-0"
-          >
+        <div className="flex items-center gap-2">            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/')}
+              className="h-7 w-7 p-0 gap-0"
+              aria-label="Back to home"
+            >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-xs text-muted-foreground">
@@ -176,7 +211,7 @@ export default function ChatPage() {
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium">Recent Searches</p>
                     <button
-                      onClick={() => { clearHistory(); toast('History cleared', 'info') }}
+                      onClick={() => { if (window.confirm('Clear all search history?')) { clearHistory(); toast('History cleared', 'info') } }}
                       className="text-[10px] text-destructive hover:text-destructive/80 font-medium cursor-pointer"
                     >
                       Clear All
@@ -480,6 +515,7 @@ export default function ChatPage() {
                     size="sm"
                     onClick={() => setMobileView('chat')}
                     className="h-7 w-7 p-0 gap-0"
+                    aria-label="Back to chat"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
@@ -521,6 +557,7 @@ export default function ChatPage() {
           )}
         </AnimatePresence>
       </div>
+
     </div>
   )
 }

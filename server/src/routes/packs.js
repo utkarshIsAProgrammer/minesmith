@@ -10,7 +10,7 @@ const router = Router();
 
 router.post('/create', async (req, res) => {
   try {
-    const { modIds, name, description, minecraftVersion, sessionId } = req.body;
+    const { modIds, name, description, minecraftVersion, loader, sessionId } = req.body;
     if (!modIds || !Array.isArray(modIds) || modIds.length === 0) {
       return res.status(400).json({ error: 'modIds array is required' });
     }
@@ -22,6 +22,7 @@ router.post('/create', async (req, res) => {
       name: (name || 'MineSmith Pack').slice(0, 100),
       description: (description || '').slice(0, 500),
       minecraft_version: minecraftVersion || '1.20.1',
+      loader: loader || 'fabric',
       mod_ids: modIds.slice(0, 100),
       downloads: 0,
       created_at: new Date().toISOString(),
@@ -76,11 +77,14 @@ router.get('/:slug/download', async (req, res) => {
     const archive = archiver('zip', { zlib: { level: 5 } });
     archive.pipe(res);
 
+    const validLoaders = ['fabric', 'forge', 'neoforge', 'quilt'];
+    const loader = validLoaders.includes(pack.loader) ? pack.loader : 'fabric';
+
     for (const modId of pack.mod_ids.slice(0, 50)) {
       try {
         const versions = await getModVersions(modId, {
           minecraftVersion: pack.minecraft_version,
-          loader: 'fabric',
+          loader,
         });
         if (versions && versions.length > 0) {
           const url = getDownloadUrl(versions[0]);
@@ -102,10 +106,13 @@ router.get('/:slug/download', async (req, res) => {
 
 router.post('/download-direct', async (req, res) => {
   try {
-    const { modIds, name, minecraftVersion } = req.body;
+    const { modIds, name, minecraftVersion, loader } = req.body;
     if (!modIds || !Array.isArray(modIds) || modIds.length === 0) {
       return res.status(400).json({ error: 'modIds array is required' });
     }
+
+    const validLoaders = ['fabric', 'forge', 'neoforge', 'quilt'];
+    const selectedLoader = validLoaders.includes(loader) ? loader : 'fabric';
 
     res.setHeader('Content-Type', 'application/zip');
     res.setHeader('Content-Disposition', `attachment; filename="${(name || 'minesmith_pack').replace(/[^a-zA-Z0-9-_]/g, '_')}.zip"`);
@@ -117,7 +124,7 @@ router.post('/download-direct', async (req, res) => {
       try {
         const versions = await getModVersions(modId, {
           minecraftVersion: minecraftVersion || '1.20.1',
-          loader: 'fabric',
+          loader: selectedLoader,
         });
         if (versions && versions.length > 0) {
           const url = getDownloadUrl(versions[0]);

@@ -34,7 +34,7 @@ interface ChatState {
   loading: boolean
   analysis: Analysis | null
   error: string | null
-  errorType: 'network' | 'ai' | 'modrinth' | 'unknown' | null
+  errorType: 'network' | 'ai' | 'modrinth' | 'config' | 'unknown' | null
   failedMessageIndex: number | null
   sessionId: string | null
   minecraftVersion: string
@@ -109,6 +109,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
   send: async (message: string, isRefinement = false) => {
     const { sessionId, mods: existingMods, messages: existingMessages, minecraftVersion, loader } = get()
+    const userMsgIndex = existingMessages.length // capture BEFORE set
 
     set({
       loading: true,
@@ -161,7 +162,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
       let errorType: ChatState['errorType'] = 'unknown'
       let errorMsg = 'Something went wrong'
 
-      if (err.message?.includes('fetch') || err.message?.includes('network')) {
+      if (err.message?.includes('No AI provider') || err.message?.includes('config')) {
+        errorType = 'config'
+        errorMsg = 'No AI provider configured. Open Settings ⚙️ to add a Groq API key or enable Ollama.'
+      } else if (err.message?.includes('fetch') || err.message?.includes('network')) {
         errorType = 'network'
         errorMsg = 'Cannot reach the server. Check if the backend is running on port 5000.'
       } else if (err.message?.includes('429') || err.message?.includes('rate')) {
@@ -178,7 +182,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       loading: false,
       error: errorMsg,
       errorType,
-      failedMessageIndex: get().messages.length - 1,
+      failedMessageIndex: userMsgIndex,
     })
 
       setTimeout(() => {

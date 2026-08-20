@@ -90,7 +90,7 @@ function PackSummaryCard({ modCount, depCount }: { modCount: number; depCount: n
 
 export default function CartSidebar({ open, onOpenChange }: CartSidebarProps) {
   const { selectedMods, removeMod, clearCart, getModIds } = useCartStore()
-  const { dependencies, mods, minecraftVersion, sessionId } = useChatStore()
+  const { dependencies, mods, minecraftVersion, loader, sessionId } = useChatStore()
   const { toast } = useToast()
   const [downloading, setDownloading] = useState(false)
   const [downloadMode, setDownloadMode] = useState<'all' | 'deps'>('all')
@@ -118,6 +118,7 @@ export default function CartSidebar({ open, onOpenChange }: CartSidebarProps) {
       const result = await createPack(ids, {
         name: 'MineSmith Pack',
         minecraftVersion,
+        loader,
         sessionId: sessionId ?? undefined,
       })
       const shareUrl = `${window.location.origin}/pack/${result.shareSlug}`
@@ -137,7 +138,7 @@ export default function CartSidebar({ open, onOpenChange }: CartSidebarProps) {
     setDownloading(true)
     setDownloadMode(includeDeps ? 'deps' : 'all')
     try {
-      await downloadPack(ids, { minecraftVersion })
+      await downloadPack(ids, { minecraftVersion, loader })
       toast(`Pack downloaded successfully! (${ids.length} files)`, 'action')
     } catch {
       toast('Download failed. Please try again.', 'error')
@@ -152,6 +153,7 @@ export default function CartSidebar({ open, onOpenChange }: CartSidebarProps) {
   }
 
   const handleClearCart = () => {
+    if (!window.confirm('Remove all mods from cart?')) return
     clearCart()
     toast('Cart cleared', 'info')
   }

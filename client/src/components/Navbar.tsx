@@ -46,6 +46,11 @@ export function Navbar({ onCartToggle, onSettingsToggle }: NavbarProps) {
     fetchVersions()
   }, [versionType])
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
+
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm">
       {/* Grass pixel strip */}

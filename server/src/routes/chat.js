@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { findModsForUser } from '../services/search.js';
 import { generateChatResponse, checkLLMHealth } from '../services/ai.js';
 import { getDb, saveDatabase } from '../db/database.js';
+import { getUserSettings } from '../services/settings.js';
 
 const router = Router();
 
@@ -20,9 +21,21 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Message must be at least 5 characters' });
     }
 
+    // Check if an AI provider is configured
+    const settings = getUserSettings();
+    const hasGroq = !!settings.groqApiKey;
+    const hasOllama = settings.provider === 'ollama';
+    if (!hasGroq && !hasOllama) {
+      return res.status(400).json({
+        error: 'No AI provider configured. Please add a Groq API key or enable Ollama in Settings.',
+        errorType: 'config',
+      });
+    }
+
     if (message.length > MAX_MESSAGE_LENGTH) {
       return res.status(400).json({ error: `Message must be under ${MAX_MESSAGE_LENGTH} characters` });
     }
+
 
     const validVersions = ['fabric', 'forge', 'neoforge', 'quilt'];
     const selectedLoader = validVersions.includes(loader) ? loader : 'fabric';

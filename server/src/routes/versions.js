@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
     versions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-    const limitNum = limit ? parseInt(limit, 10) : (type === 'all' ? 100 : 50);
+    const limitNum = limit ? Math.min(parseInt(limit, 10) || 50, 200) : (type === 'all' ? 100 : 50);
     versions = versions.slice(0, limitNum);
 
     res.json(versions.map(v => ({

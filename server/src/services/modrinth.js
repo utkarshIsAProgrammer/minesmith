@@ -6,6 +6,8 @@ const HEADERS = {
   Accept: 'application/json',
 };
 
+const FETCH_TIMEOUT = 10_000; // 10 seconds for all Modrinth calls
+
 /**
  * Search for mods on Modrinth
  * @param {string} query - Search query
@@ -47,10 +49,10 @@ export async function searchMods(query, options = {}) {
 
   const url = `${BASE_URL}/search?${params.toString()}`;
 
-  const res = await fetch(url, { headers: HEADERS });
+  const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(FETCH_TIMEOUT) });
 
   if (!res.ok) {
-    throw new Error(`Modrinth search error (${res.status}): ${await res.text()}`);
+    throw new Error(`Modrinth search error (${res.status})`);
   }
 
   const data = await res.json();
@@ -61,7 +63,7 @@ export async function searchMods(query, options = {}) {
  * Get full project details from Modrinth
  */
 export async function getModDetails(modId) {
-  const res = await fetch(`${BASE_URL}/project/${modId}`, { headers: HEADERS });
+  const res = await fetch(`${BASE_URL}/project/${modId}`, { headers: HEADERS, signal: AbortSignal.timeout(FETCH_TIMEOUT) });
 
   if (!res.ok) {
     throw new Error(`Modrinth project error (${res.status})`);
@@ -85,7 +87,7 @@ export async function getModVersions(modId, options = {}) {
   }
 
   const url = `${BASE_URL}/project/${modId}/version${params.toString() ? '?' + params.toString() : ''}`;
-  const res = await fetch(url, { headers: HEADERS });
+  const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(FETCH_TIMEOUT) });
 
   if (!res.ok) {
     throw new Error(`Modrinth versions error (${res.status})`);
@@ -106,7 +108,7 @@ export function getDownloadUrl(versionData) {
  * Download a mod file as buffer
  */
 export async function downloadModFile(url) {
-  const res = await fetch(url, { headers: HEADERS });
+  const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(30_000) });
 
   if (!res.ok) {
     throw new Error(`Failed to download mod file (${res.status})`);

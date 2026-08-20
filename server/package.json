@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "node --watch src/app.js"
+    "dev": "node --watch src/app.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "archiver": "^7.0.1",
@@ -17,5 +19,8 @@
     "express-validator": "^7.3.2",
     "helmet": "^8.3.0",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
   }
 }

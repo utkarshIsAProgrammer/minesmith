@@ -15,14 +15,19 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 8000)
     fetch(apiBase('/api/settings/test'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ provider: 'ollama' }),
+      signal: controller.signal,
     })
       .then(res => res.json())
       .then(data => setOllamaStatus(data.ok ? 'available' : 'unavailable'))
       .catch(() => setOllamaStatus('unavailable'))
+      .finally(() => clearTimeout(timeout))
+    return () => { controller.abort(); clearTimeout(timeout) }
   }, [])
 
   const handleSelect = async (provider: 'groq' | 'ollama') => {

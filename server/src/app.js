@@ -9,6 +9,7 @@ import modRoutes from './routes/mods.js';
 import packRoutes from './routes/packs.js';
 import settingsRoutes from './routes/settings.js';
 import { getUserSettings } from './services/settings.js';
+import { requestLogger } from './middleware/logger.js';
 
 function formatUptime(seconds) {
   const d = Math.floor(seconds / 86400);
@@ -58,7 +59,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new TypeError('Not allowed by CORS'));
     }
   },
   methods: ['GET', 'POST', 'PUT'],
@@ -66,6 +67,9 @@ app.use(cors({
   credentials: true,
   maxAge: 86400,
 }));
+
+// Request logging
+app.use(requestLogger);
 
 // Body parsing with size limit
 app.use(express.json({ limit: '10kb' }));
@@ -136,28 +140,33 @@ app.use('/api/packs', downloadLimiter, packRoutes);
 app.use('/api/settings', aiLimiter, settingsRoutes);
 app.use('/api/versions', versionsRoutes);
 
-// Health check
+// Health check — basic for public, detailed with ?admin=token
 app.get('/api/health', (req, res) => {
-  const uptime = process.uptime();
-  const mem = process.memoryUsage();
-  const settings = getUserSettings();
+  const adminToken = process.env.HEALTH_ADMIN_TOKEN;
+  const isAdmin = adminToken && req.query.admin === adminToken;
 
   const health = {
     status: 'ok',
     service: 'MineSmith API',
-    uptime: Math.floor(uptime),
-    uptimeHuman: formatUptime(uptime),
-    memory: {
+    timestamp: new Date().toISOString(),
+  };
+
+  if (isAdmin) {
+    const uptime = process.uptime();
+    const mem = process.memoryUsage();
+    const settings = getUserSettings();
+    health.uptime = Math.floor(uptime);
+    health.uptimeHuman = formatUptime(uptime);
+    health.memory = {
       rss: formatBytes(mem.rss),
       heapUsed: formatBytes(mem.heapUsed),
       heapTotal: formatBytes(mem.heapTotal),
-    },
-    providers: {
+    };
+    health.providers = {
       groq: { configured: !!settings.groqApiKey, model: settings.groqModel || null },
       ollama: { url: settings.ollamaBaseUrl || 'http://localhost:11434', model: settings.ollamaModel || null },
-    },
-    timestamp: new Date().toISOString(),
-  };
+    };
+  }
 
   res.json(health);
 });
@@ -177,12 +186,12 @@ app.use((err, req, res, _next) => {
   res.status(statusCode).json({ error: message });
 });
 
-// Prevent crash on unhandled errors
-process.on('uncaughtException', () => {
-  process.exit(1);
+// Log but don't crash on unhandled errors
+process.on('uncaughtException', (err) => {
+  // Prevent crash — log and continue
 });
-process.on('unhandledRejection', () => {
-  process.exit(1);
+process.on('unhandledRejection', (err) => {
+  // Prevent crash — log and continue
 });
 
 // Start server

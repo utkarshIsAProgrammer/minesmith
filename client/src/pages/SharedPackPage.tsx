@@ -55,7 +55,7 @@ export default function SharedPackPage() {
     return (
       <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-4rem)]">
         <div className="flex flex-col items-center gap-3 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-destructive/10">
+          <div className="flex h-16 w-16 items-center justify-center bg-destructive/10">
             <AlertCircle className="h-8 w-8 text-destructive" />
           </div>
           <p className="text-lg font-semibold text-foreground">Pack not found</p>

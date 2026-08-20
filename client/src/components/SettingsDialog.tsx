@@ -27,6 +27,7 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
     ollamaModel: 'qwen3.5:9b',
   })
   const [loading, setLoading] = useState(false)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [testing, setTesting] = useState(false)
   const [testResult, setTestResult] = useState<{ ok: boolean; message: string } | null>(null)
   const [showKey, setShowKey] = useState(false)
@@ -53,8 +54,12 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
 
   async function loadSettings() {
     setLoading(true)
+    setLoadError(null)
     try {
-      const res = await fetch(apiBase('/api/settings'))
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 8000)
+      const res = await fetch(apiBase('/api/settings'), { signal: controller.signal })
+      clearTimeout(timeout)
       if (res.ok) {
         const s = await res.json()
         setSettings({
@@ -65,12 +70,19 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
           ollamaModel: s.ollamaModel || 'qwen3.5:9b',
         })
         setGroqModel(s.groqModel || '')
-        // Fetch models if Groq is configured
         if (s.provider === 'groq' && s.groqApiKey) {
           fetchGroqModels(s.groqApiKey)
         }
+      } else {
+        setLoadError('Failed to load settings')
       }
-    } catch {}
+    } catch (err: any) {
+      if (err.name === 'AbortError') {
+        setLoadError('Cannot reach the server. Is the backend running?')
+      } else {
+        setLoadError('Failed to connect to server')
+      }
+    }
     setLoading(false)
   }
 
@@ -191,8 +203,21 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex flex-col items-center justify-center py-12 gap-3">
               <Loader2 className="h-5 w-5 animate-spin text-primary" />
+              <span className="text-[9px] text-muted-foreground">Connecting to server...</span>
+            </div>
+          ) : loadError ? (
+            <div className="p-5 space-y-3">
+              <div className="pixel-border p-3 text-xs text-destructive border-destructive/30">
+                {loadError}
+              </div>
+              <button
+                onClick={loadSettings}
+                className="pixel-btn px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-foreground cursor-pointer bg-secondary/50 flex items-center gap-1.5"
+              >
+                <RefreshCw className="h-3 w-3" /> Retry
+              </button>
             </div>
           ) : (
             <div className="p-5 space-y-4">

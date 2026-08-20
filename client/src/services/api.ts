@@ -70,13 +70,16 @@ export async function sendMessage(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message, sessionId, minecraftVersion, loader }),
   })
-  if (!res.ok) throw new Error(`Chat failed: ${res.statusText}`)
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}))
+    throw new Error(body.error || `Chat failed: ${res.statusText}`)
+  }
   return res.json()
 }
 
 export async function downloadPack(
   modIds: string[],
-  options: { name?: string; minecraftVersion?: string } = {}
+  options: { name?: string; minecraftVersion?: string; loader?: string } = {}
 ) {
   const res = await fetch(`${BASE}/packs/download-direct`, {
     method: 'POST',
@@ -85,6 +88,7 @@ export async function downloadPack(
       modIds,
       name: options.name || 'MineSmith Pack',
       minecraftVersion: options.minecraftVersion || '1.20.1',
+      loader: options.loader || 'fabric',
     }),
   })
   if (!res.ok) throw new Error('Download failed')
@@ -119,7 +123,7 @@ export interface SharedPack {
 
 export async function createPack(
   modIds: string[],
-  options: { name?: string; description?: string; minecraftVersion?: string; sessionId?: string } = {}
+  options: { name?: string; description?: string; minecraftVersion?: string; loader?: string; sessionId?: string } = {}
 ): Promise<{ packId: string; shareSlug: string; shareUrl: string }> {
   const res = await fetch(`${BASE}/packs/create`, {
     method: 'POST',
@@ -129,6 +133,7 @@ export async function createPack(
       name: options.name || 'MineSmith Pack',
       description: options.description || '',
       minecraftVersion: options.minecraftVersion || '1.20.1',
+      loader: options.loader || 'fabric',
       sessionId: options.sessionId,
     }),
   })

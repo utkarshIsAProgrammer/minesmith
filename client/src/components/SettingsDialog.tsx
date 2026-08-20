@@ -60,6 +60,7 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
         setSettings({
           provider: s.provider || 'groq',
           groqKey: s.groqApiKey || '',
+          groqModel: s.groqModel || '',
           ollamaUrl: s.ollamaBaseUrl || 'http://localhost:11434',
           ollamaModel: s.ollamaModel || 'qwen3.5:9b',
         })

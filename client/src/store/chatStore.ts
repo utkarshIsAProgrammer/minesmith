@@ -35,6 +35,7 @@ interface ChatState {
   analysis: Analysis | null
   error: string | null
   errorType: 'network' | 'ai' | 'modrinth' | 'unknown' | null
+  failedMessageIndex: number | null
   sessionId: string | null
   minecraftVersion: string
   loader: string

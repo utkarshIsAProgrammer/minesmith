@@ -46,6 +46,7 @@ export default function Dependencies({ dependencies, mods }: DependenciesProps) 
           selectedByUser: false,
           client_side: '',
           server_side: '',
+          gallery: [],
         })
       }
     }
@@ -140,6 +141,7 @@ export default function Dependencies({ dependencies, mods }: DependenciesProps) 
                             selectedByUser: false,
                             client_side: '',
                             server_side: '',
+                            gallery: [],
                           })}
                         />
                       ))}
@@ -180,6 +182,7 @@ export default function Dependencies({ dependencies, mods }: DependenciesProps) 
                             whySuggested: 'Optional dependency',
                             selectedByUser: false,
                             client_side: '',
+                            gallery: [],
                             server_side: '',
                           })}
                         />

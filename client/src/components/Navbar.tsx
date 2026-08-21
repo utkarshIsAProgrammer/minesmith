@@ -101,23 +101,21 @@ export function Navbar({ onCartToggle, onSettingsToggle }: NavbarProps) {
                       </button>
                     ))}
                   </div>
-                </div>
-
-                <div className="flex items-center pixel-input p-0.5">
-                  {LOADERS.map(l => (
-                    <button
-                      key={l.value}
-                      onClick={() => setLoader(l.value)}
-                      className={`px-3 py-1 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                        loader === l.value
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {l.label}
-                    </button>
-                  ))}
-                </div>
+                </div>                    <div className="flex items-center pixel-input p-0.5">
+                      {LOADERS.map(l => (
+                        <button
+                          key={l.value}
+                          onClick={() => setLoader(l.value)}
+                          className={`px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                            loader === l.value
+                              ? 'bg-primary text-primary-foreground'
+                              : 'text-muted-foreground hover:text-foreground'
+                          }`}
+                        >
+                          {l.label}
+                        </button>
+                      ))}
+                    </div>
               </div>
             )}
 

@@ -6,7 +6,7 @@ export default function NotFoundPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-8rem)]">
+    <div className="flex-1 flex items-center justify-center" style={{ minHeight: 'calc(100dvh - 8rem)' }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

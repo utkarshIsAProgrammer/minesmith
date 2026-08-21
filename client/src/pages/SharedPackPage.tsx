@@ -42,7 +42,7 @@ export default function SharedPackPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-4rem)]">
+      <div className="flex-1 flex items-center justify-center" style={{ minHeight: 'calc(100dvh - 4rem)' }}>
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 text-primary animate-spin" />
           <p className="text-sm text-muted-foreground">Loading pack...</p>
@@ -53,7 +53,7 @@ export default function SharedPackPage() {
 
   if (error || !pack) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-4rem)]">
+      <div className="flex-1 flex items-center justify-center" style={{ minHeight: 'calc(100dvh - 4rem)' }}>
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="flex h-16 w-16 items-center justify-center bg-destructive/10">
             <AlertCircle className="h-8 w-8 text-destructive" />
@@ -68,7 +68,7 @@ export default function SharedPackPage() {
   }
 
   return (
-    <div className="flex-1 min-h-[calc(100vh-4rem)]">
+    <div className="flex-1" style={{ minHeight: 'calc(100dvh - 4rem)' }}>
       <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
         {/* Header */}
         <motion.div
@@ -120,8 +120,8 @@ export default function SharedPackPage() {
           <Button
             onClick={handleDownload}
             disabled={downloading}
-            size="xl"
-            className="w-full sm:w-auto gap-2"
+            size="lg"
+            className="w-full gap-2"
           >
             {downloading ? (
               <>
@@ -151,17 +151,17 @@ export default function SharedPackPage() {
               transition={{ delay: 0.15 + i * 0.04 }}
             >
               <Card className="border-border/40 hover:border-border/80 transition-colors">
-                <CardContent className="p-4 flex items-center gap-4">
-                  <Avatar className="h-12 w-12 border border-border/50 shrink-0">
+                <CardContent className="p-3 sm:p-4 flex items-center gap-3 sm:gap-4">
+                  <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border border-border/50 shrink-0">
                     <AvatarImage src={mod.icon_url} alt={mod.title} />
                     <AvatarFallback className="bg-secondary text-lg">🧩</AvatarFallback>
                   </Avatar>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-foreground text-[15px]">
+                    <h3 className="font-semibold text-foreground text-sm sm:text-[15px]">
                       {mod.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-1 mt-0.5">
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1 mt-0.5">
                       {mod.description}
                     </p>
                   </div>

@@ -385,8 +385,8 @@ export default function ChatPage() {
 
   // ===== Mods Panel (shared between mobile & desktop) =====
   const modsPanel = (
-    <div className="flex-1 overflow-y-auto bg-background/30 h-full">
-      <div className="p-4 sm:p-6">
+    <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-background/30 w-full">
+      <div className="p-3 sm:p-6">
         <AnimatePresence>
           {analysis && (
             <motion.div
@@ -475,7 +475,7 @@ export default function ChatPage() {
   )
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden h-[calc(100vh-4rem)] relative">
+    <div className="flex-1 flex flex-col overflow-hidden relative" style={{ height: 'calc(100dvh - 4rem)' }}>
       {/* Desktop: side by side */}
       <div className="hidden lg:flex flex-1 min-h-0">
         <div className="flex-1 flex flex-col min-h-0 border-r border-border/50">
@@ -485,7 +485,7 @@ export default function ChatPage() {
       </div>
 
       {/* Mobile: toggle views */}
-      <div className="flex lg:hidden flex-1 min-h-0 h-0">
+      <div className="flex lg:hidden flex-1 min-h-0 h-full w-full">
         <AnimatePresence mode="wait">
           {mobileView === 'chat' ? (
             <motion.div

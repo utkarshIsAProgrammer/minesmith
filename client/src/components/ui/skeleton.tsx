@@ -14,7 +14,7 @@ export function ModCardSkeleton({ index = 0 }: { index?: number }) {
       transition={{ delay: index * 0.08 }}
       className="pixel-card overflow-hidden"
     >
-      <div className="p-5">
+      <div className="p-3 sm:p-5">
         {/* Header */}
         <div className="flex items-start gap-3.5 mb-4">
           <Skeleton className="h-12 w-12 shrink-0" />

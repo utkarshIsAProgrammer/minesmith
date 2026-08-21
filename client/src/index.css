@@ -196,3 +196,22 @@ button, a, input, select, textarea {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ===== Mobile fixes ===== */
+@media (max-width: 639px) {
+  .pixel-card {
+    border-width: 1.5px;
+  }
+  .pixel-btn {
+    border-width: 1.5px;
+  }
+  /* Prevent horizontal overflow on small screens */
+  body {
+    overflow-x: hidden;
+  }
+  /* Ensure mod cards don't overflow */
+  .pixel-card img {
+    max-width: 100%;
+    height: auto;
+  }
+}

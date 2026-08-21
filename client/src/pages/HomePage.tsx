@@ -161,7 +161,7 @@ export default function HomePage({ onSend }: HomePageProps) {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center overflow-hidden" style={{ minHeight: 'calc(100dvh - 4rem)' }}>
       {/* Background gradient orbs */}
       <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />

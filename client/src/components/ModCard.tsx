@@ -87,10 +87,10 @@ export default function ModCard({ mod, index }: ModCardProps) {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
         )}
 
-        <CardContent className="relative p-5">
+        <CardContent className="relative p-3 sm:p-5">
           {/* Header */}
-          <div className="flex items-start gap-3.5 mb-4">
-            <Avatar className="h-12 w-12 border border-border/50 overflow-hidden shrink-0">
+          <div className="flex items-start gap-2.5 sm:gap-3.5 mb-3 sm:mb-4">
+            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border border-border/50 overflow-hidden shrink-0">
               {!imgError ? (
                 <AvatarImage
                   src={mod.icon_url}
@@ -126,8 +126,8 @@ export default function ModCard({ mod, index }: ModCardProps) {
           </div>
 
           {/* Why suggested */}
-          <div className="rounded-lg bg-secondary/50 border border-border/30 px-3.5 py-2.5 mb-4">
-            <p className="text-[13px] text-muted-foreground leading-relaxed">
+          <div className="rounded-lg bg-secondary/50 border border-border/30 px-3 py-2 sm:px-3.5 sm:py-2.5 mb-3 sm:mb-4 overflow-hidden">
+            <p className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed">
               <span className="text-primary font-medium">💡</span>{' '}
               {mod.whySuggested}
             </p>
@@ -219,7 +219,7 @@ export default function ModCard({ mod, index }: ModCardProps) {
           )}
 
           {/* Stats */}
-          <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4 flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-muted-foreground mb-3 sm:mb-4 flex-wrap">
             <span className="flex items-center gap-1">
               <Download className="h-3 w-3" />
               {formatDownloads(mod.downloads)}
@@ -244,7 +244,7 @@ export default function ModCard({ mod, index }: ModCardProps) {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden mb-4"
+                className="overflow-hidden mb-3 sm:mb-4"
               >
                 <div className="bg-secondary/30 border border-border/30 p-4 space-y-3">
                   <div>
@@ -281,7 +281,7 @@ export default function ModCard({ mod, index }: ModCardProps) {
           </AnimatePresence>
 
           {/* Actions */}
-          <div className="flex flex-nowrap gap-2 items-center">
+          <div className="flex flex-nowrap gap-1.5 sm:gap-2 items-center">
             <Button
               variant={isSelected ? 'default' : 'outline'}
               size="sm"

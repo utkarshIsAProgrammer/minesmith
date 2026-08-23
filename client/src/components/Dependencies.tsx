@@ -211,27 +211,27 @@ function DependencyRow({
   onAdd: () => void
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-lg bg-secondary/30 border border-border/30 p-3 group hover:border-border/60 transition-colors">
-      <Avatar className="h-8 w-8 border border-border/50">
+    <div className="flex items-center gap-2 sm:gap-3 rounded-lg bg-secondary/30 border border-border/30 p-2.5 sm:p-3 group hover:border-border/60 transition-colors">
+      <Avatar className="h-8 w-8 border border-border/50 shrink-0">
         <AvatarImage src={dep.iconUrl} alt={dep.projectName} />
         <AvatarFallback className="bg-secondary text-xs">🧩</AvatarFallback>
       </Avatar>
 
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-foreground truncate">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <span className="text-xs sm:text-sm font-medium text-foreground truncate">
             {dep.projectName}
           </span>
           {dep.type === 'required' && (
-            <Badge variant="warning" className="text-[9px] px-1.5 py-0">Required</Badge>
+            <Badge variant="warning" className="text-[9px] px-1.5 py-0 shrink-0">Required</Badge>
           )}
         </div>
-        <p className="text-xs text-muted-foreground truncate">
+        <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
           Needed by: <span className="text-foreground/70">{requiredByNames.join(', ')}</span>
         </p>
       </div>
 
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
         {dep.projectUrl && (
           <a
             href={dep.projectUrl}
@@ -247,17 +247,19 @@ function DependencyRow({
           variant={isSelected ? 'default' : 'outline'}
           size="sm"
           onClick={onAdd}
-          className="h-7 px-2.5 text-xs gap-1"
+          className="h-7 px-2 sm:px-2.5 text-[10px] sm:text-xs gap-1"
         >
           {isSelected ? (
             <>
               <Check className="h-3 w-3" />
-              Added
+              <span className="hidden sm:inline">Added</span>
+              <span className="sm:hidden">✓</span>
             </>
           ) : (
             <>
               <Plus className="h-3 w-3" />
-              Add
+              <span className="hidden sm:inline">Add</span>
+              <span className="sm:hidden">+</span>
             </>
           )}
         </Button>

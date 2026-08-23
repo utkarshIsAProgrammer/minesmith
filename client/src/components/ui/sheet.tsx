@@ -26,8 +26,7 @@ function Sheet({ open, onOpenChange, children }: SheetProps) {
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-className="fixed inset-y-0 right-0 z-50 h-full w-full sm:max-w-md border-l-4 border-[#3f3f46] bg-background shadow-[−4px_0_0_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}            className="fixed inset-y-0 right-0 z-50 h-full w-[min(100vw,28rem)] border-l-4 border-[#3f3f46] bg-background shadow-[−4px_0_0_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
           >
             {/* Inventory top bar */}
             <div className="h-1 w-full" style={{
@@ -42,7 +41,7 @@ className="fixed inset-y-0 right-0 z-50 h-full w-full sm:max-w-md border-l-4 bor
 }
 
 function SheetHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('flex flex-col space-y-2 p-6 text-center sm:text-left', className)} {...props} />
+  return <div className={cn('flex flex-col space-y-2 px-4 py-4 sm:p-6 text-center sm:text-left', className)} {...props} />
 }
 
 function SheetTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
@@ -54,11 +53,11 @@ function SheetDescription({ className, ...props }: React.HTMLAttributes<HTMLPara
 }
 
 function SheetContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('px-6', className)} {...props} />
+  return <div className={cn('px-4 sm:px-6', className)} {...props} />
 }
 
 function SheetFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 p-6 border-t-2 border-[#3f3f46]', className)} {...props} />
+  return <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 px-4 py-4 sm:p-6 border-t-2 border-[#3f3f46]', className)} {...props} />
 }
 
 function SheetClose({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {

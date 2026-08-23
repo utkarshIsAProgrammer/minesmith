@@ -91,20 +91,20 @@ export default function SharedPackPage() {
             </p>
           )}
 
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <Badge variant="success">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
+            <Badge variant="success" className="text-[10px] sm:text-xs">
               <Package className="h-3 w-3 mr-1" />
               {pack.mods?.length || pack.mod_ids.length} mods
             </Badge>
-            <Badge variant="info">
+            <Badge variant="info" className="text-[10px] sm:text-xs">
               MC {pack.minecraft_version}
             </Badge>
             <span className="flex items-center gap-1">
-              <Download className="h-3.5 w-3.5" />
+              <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               {pack.downloads} downloads
             </span>
             <span className="flex items-center gap-1">
-              <Calendar className="h-3.5 w-3.5" />
+              <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               {new Date(pack.created_at).toLocaleDateString()}
             </span>
           </div>
@@ -131,7 +131,7 @@ export default function SharedPackPage() {
             ) : (
               <>
                 <Download className="h-5 w-5" />
-                Download Pack ({pack.mods?.length || pack.mod_ids.length} mods)
+                <span className="truncate">Download Pack ({pack.mods?.length || pack.mod_ids.length} mods)</span>
               </>
             )}
           </Button>

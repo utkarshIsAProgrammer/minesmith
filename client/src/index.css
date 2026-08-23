@@ -89,6 +89,17 @@ h2, h3, h4, h5, h6, p, span, div, a, button, input, select, textarea, label, li,
     2px 2px 0 rgba(0,0,0,0.4);
 }
 
+/* Reduce box-shadow offset on small screens to prevent overflow */
+@media (max-width: 639px) {
+  .pixel-card,
+  .pixel-border,
+  .pixel-border-active {
+    box-shadow:
+      inset 2px 2px 0 rgba(255,255,255,0.04),
+      inset -2px -2px 0 rgba(0,0,0,0.3);
+  }
+}
+
 .pixel-btn {
   border: 2px solid #3f3f46;
   box-shadow:
@@ -114,7 +125,7 @@ h2, h3, h4, h5, h6, p, span, div, a, button, input, select, textarea, label, li,
   box-shadow:
     inset 2px 2px 0 rgba(255,255,255,0.04),
     inset -2px -2px 0 rgba(0,0,0,0.3),
-    4px 4px 0 rgba(0,0,0,0.5);
+    3px 3px 0 rgba(0,0,0,0.5);
 }
 
 .pixel-input {
@@ -213,5 +224,47 @@ button, a, input, select, textarea {
   .pixel-card img {
     max-width: 100%;
     height: auto;
+  }
+}
+
+/* ===== Safe area for notched phones ===== */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ===== Touch-friendly minimum sizes ===== */
+@media (pointer: coarse) {
+  button, a, select, input, textarea {
+    min-height: 36px;
+  }
+}
+
+/* ===== Prevent text overflow globally ===== */
+.truncate, .line-clamp-1, .line-clamp-2 {
+  min-width: 0;
+}
+
+/* ===== Ensure all images are responsive ===== */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== Fix select dropdowns on mobile ===== */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+
+/* ===== Landscape mode adjustments ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .grass-stripe {
+    height: 2px;
   }
 }

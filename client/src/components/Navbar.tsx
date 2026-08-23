@@ -106,7 +106,7 @@ export function Navbar({ onCartToggle, onSettingsToggle }: NavbarProps) {
                         <button
                           key={l.value}
                           onClick={() => setLoader(l.value)}
-                          className={`px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                          className={`px-1.5 sm:px-3 py-1 text-[9px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                             loader === l.value
                               ? 'bg-primary text-primary-foreground'
                               : 'text-muted-foreground hover:text-foreground'
@@ -135,7 +135,7 @@ export function Navbar({ onCartToggle, onSettingsToggle }: NavbarProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="md:hidden h-9 w-9 p-0 pixel-btn"
+                  className="md:hidden h-9 w-9 p-0 pixel-btn shrink-0"
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 >
                   {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -203,12 +203,12 @@ export function Navbar({ onCartToggle, onSettingsToggle }: NavbarProps) {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground mb-1.5 uppercase tracking-wider font-bold">Loader</p>
-                    <div className="flex gap-0">
+                    <div className="flex gap-0 overflow-hidden">
                       {LOADERS.map(l => (
                         <button
                           key={l.value}
                           onClick={() => setLoader(l.value)}
-                          className={`flex-1 px-3 py-2 text-xs font-bold uppercase transition-all ${
+                          className={`flex-1 px-2 sm:px-3 py-2 text-[10px] sm:text-xs font-bold uppercase transition-all truncate ${
                             loader === l.value
                               ? 'bg-primary text-primary-foreground'
                               : 'pixel-input text-muted-foreground'

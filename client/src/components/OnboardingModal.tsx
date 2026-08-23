@@ -81,10 +81,10 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="w-full max-w-md bg-background pixel-card"
+          className="w-full max-w-[min(28rem,calc(100vw-2rem))] bg-background pixel-card"
         >
           {/* Step indicator */}
-          <div className="flex items-center gap-1.5 px-6 pt-4">
+          <div className="flex items-center gap-1.5 px-4 sm:px-6 pt-4">
             {[0, 1].map(s => (
               <div
                 key={s}
@@ -96,7 +96,7 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
           </div>
 
           {/* Header */}
-          <div className="px-6 py-5 text-center">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 text-center">
             <img src="/logo.svg" alt="MineSmith" className="h-12 w-12 mx-auto mb-3" />
             <h1 className="text-xl font-bold text-foreground">Welcome to MineSmith</h1>
             <p className="text-sm text-muted-foreground mt-1">
@@ -106,7 +106,7 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
 
           {/* Step 0: Choose provider */}
           {step === 0 && (
-            <div className="px-6 pb-6 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
               <p className="text-sm text-muted-foreground text-center">
                 Choose how MineSmith connects to AI:
               </p>
@@ -169,7 +169,7 @@ export default function OnboardingModal({ onComplete }: OnboardingModalProps) {
 
           {/* Step 1: Groq API key */}
           {step === 1 && (
-            <div className="px-6 pb-6 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
               <p className="text-sm text-muted-foreground">
                 Paste your free Groq API key:
               </p>

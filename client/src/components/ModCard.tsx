@@ -152,21 +152,22 @@ export default function ModCard({ mod, index }: ModCardProps) {
                   className="overflow-hidden border border-border/30"
                 >
                   <div className="flex items-center justify-between px-3 py-2 bg-secondary/50">
-                    <div className="flex items-center gap-2">
-                      <Image className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Image className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      <span className="text-xs text-muted-foreground truncate">
                         {gallery[galleryIndex]?.title || `Screenshot ${galleryIndex + 1}`}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-0.5 shrink-0">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0"
+                        className="h-7 w-7 p-0"
                         onClick={() => setGalleryIndex(Math.max(0, galleryIndex - 1))}
                         disabled={galleryIndex === 0}
+                        aria-label="Previous screenshot"
                       >
-                        <ChevronLeft className="h-3 w-3" />
+                        <ChevronLeft className="h-3.5 w-3.5" />
                       </Button>
                       <span className="text-[10px] text-muted-foreground min-w-[30px] text-center">
                         {galleryIndex + 1}/{gallery.length}
@@ -174,19 +175,21 @@ export default function ModCard({ mod, index }: ModCardProps) {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0"
+                        className="h-7 w-7 p-0"
                         onClick={() => setGalleryIndex(Math.min(gallery.length - 1, galleryIndex + 1))}
                         disabled={galleryIndex === gallery.length - 1}
+                        aria-label="Next screenshot"
                       >
-                        <ChevronRight className="h-3 w-3" />
+                        <ChevronRight className="h-3.5 w-3.5" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0 ml-1"
+                        className="h-7 w-7 p-0 ml-0.5"
                         onClick={() => setGalleryOpen(false)}
+                        aria-label="Close gallery"
                       >
-                        <span className="text-[10px]">✕</span>
+                        <span className="text-sm">✕</span>
                       </Button>
                     </div>
                   </div>
@@ -220,19 +223,19 @@ export default function ModCard({ mod, index }: ModCardProps) {
 
           {/* Stats */}
           <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-muted-foreground mb-3 sm:mb-4 flex-wrap">
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1 shrink-0">
               <Download className="h-3 w-3" />
               {formatDownloads(mod.downloads)}
             </span>
-            <span className="h-1 w-1 bg-border" />
-            <span className="flex items-center gap-1">
+            <span className="h-1 w-1 bg-border shrink-0" />
+            <span className="flex items-center gap-1 shrink-0">
               <TrendingUp className="h-3 w-3" />
               {formatDownloads(mod.follows)} followers
             </span>
             {mod.categories?.length > 0 && (
               <>
-                <span className="h-1 w-1 bg-border" />
-                <span>{mod.categories.slice(0, 3).join(', ')}</span>
+                <span className="h-1 w-1 bg-border shrink-0 hidden sm:block" />
+                <span className="truncate max-w-[200px] sm:max-w-none">{mod.categories.slice(0, 3).join(', ')}</span>
               </>
             )}
           </div>
@@ -251,7 +254,7 @@ export default function ModCard({ mod, index }: ModCardProps) {
                     <p className="text-xs font-medium text-muted-foreground mb-1">Full Description</p>
                     <p className="text-sm text-foreground/80 leading-relaxed">{mod.description}</p>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
                       <p className="text-muted-foreground mb-1">Client Side</p>
                       <Badge variant={mod.client_side === 'required' ? 'success' : mod.client_side === 'unsupported' ? 'destructive' : 'outline'}>
@@ -281,7 +284,7 @@ export default function ModCard({ mod, index }: ModCardProps) {
           </AnimatePresence>
 
           {/* Actions */}
-          <div className="flex flex-nowrap gap-1.5 sm:gap-2 items-center">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 items-center">
             <Button
               variant={isSelected ? 'default' : 'outline'}
               size="sm"
@@ -305,7 +308,8 @@ export default function ModCard({ mod, index }: ModCardProps) {
               variant="ghost"
               size="sm"
               onClick={() => setExpanded(!expanded)}
-              className="gap-1.5 text-muted-foreground shrink-0"
+              className="gap-1.5 text-muted-foreground shrink-0 px-2"
+              aria-label={expanded ? 'Show less details' : 'Show more details'}
             >
               {expanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
               <span className="hidden sm:inline">{expanded ? 'Less' : 'Details'}</span>
@@ -315,7 +319,8 @@ export default function ModCard({ mod, index }: ModCardProps) {
               href={mod.project_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground hover:text-primary transition-colors shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 text-xs text-muted-foreground hover:text-primary transition-colors shrink-0"
+              aria-label="Open on Modrinth"
             >
               <ExternalLink className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Modrinth</span>

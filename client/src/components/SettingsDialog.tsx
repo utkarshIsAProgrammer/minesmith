@@ -189,10 +189,10 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
         exit={{ opacity: 0, scale: 0.95 }}
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
-        <div className="w-full max-w-sm bg-background pixel-card" onClick={e => e.stopPropagation()}>
+        <div className="w-full max-w-[min(20rem,calc(100vw-2rem))] bg-background pixel-card" onClick={e => e.stopPropagation()}>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b-2 border-[#3f3f46]">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b-2 border-[#3f3f46]">
             <div className="flex items-center gap-2">
               <Settings className="h-4 w-4 text-primary" />
               <span className="text-sm font-bold uppercase tracking-wider">Settings</span>
@@ -208,7 +208,7 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
               <span className="text-[9px] text-muted-foreground">Connecting to server...</span>
             </div>
           ) : loadError ? (
-            <div className="p-5 space-y-3">
+            <div className="p-4 sm:p-5 space-y-3">
               <div className="pixel-border p-3 text-xs text-destructive border-destructive/30">
                 {loadError}
               </div>
@@ -220,7 +220,7 @@ export default function SettingsDialog({ open, onClose }: SettingsDialogProps) {
               </button>
             </div>
           ) : (
-            <div className="p-5 space-y-4">
+            <div className="p-4 sm:p-5 space-y-4">
 
               {/* Two provider buttons */}
               <div className="grid grid-cols-2 gap-2">

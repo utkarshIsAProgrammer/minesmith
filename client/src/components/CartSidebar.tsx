@@ -225,8 +225,9 @@ export default function CartSidebar({ open, onOpenChange }: CartSidebarProps) {
                       <p className="text-xs text-muted-foreground truncate">{mod.whySuggested}</p>
                     </div>
                     <button
-                      className="h-8 w-8 flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive pixel-btn cursor-pointer"
+                      className="h-8 w-8 flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive pixel-btn cursor-pointer shrink-0"
                       onClick={() => handleRemoveMod(mod.id, mod.title)}
+                      aria-label={`Remove ${mod.title}`}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>

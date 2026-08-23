@@ -174,7 +174,7 @@ export default function HomePage({ onSend }: HomePageProps) {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="text-center mb-12"
         >
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground mb-6 leading-[1.3]">
+          <h1 className="text-xl sm:text-3xl lg:text-5xl font-bold tracking-tight text-foreground mb-6 leading-[1.3]">
             Describe your dream
             <br />
             <span className="text-primary">Minecraft</span>
@@ -329,12 +329,12 @@ export default function HomePage({ onSend }: HomePageProps) {
                 whileHover={{ scale: 1.01, x: 2 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={() => handleExample(ex.text)}
-                className={`flex items-start gap-3 border p-4 text-left transition-all cursor-pointer group hover:shadow-md ${ex.bg}`}
+                className={`flex items-start gap-2 sm:gap-3 border p-3 sm:p-4 text-left transition-all cursor-pointer group hover:shadow-md ${ex.bg}`}
               >
-                <div className={`mt-0.5 ${ex.color} group-hover:scale-110 transition-transform`}>
+                <div className={`mt-0.5 shrink-0 ${ex.color} group-hover:scale-110 transition-transform`}>
                   {ex.icon}
                 </div>
-                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors leading-relaxed">
+                <span className="text-xs sm:text-sm text-muted-foreground group-hover:text-foreground transition-colors leading-relaxed">
                   {ex.text}
                 </span>
               </motion.button>

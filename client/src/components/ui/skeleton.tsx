@@ -16,12 +16,12 @@ export function ModCardSkeleton({ index = 0 }: { index?: number }) {
     >
       <div className="p-3 sm:p-5">
         {/* Header */}
-        <div className="flex items-start gap-3.5 mb-4">
-          <Skeleton className="h-12 w-12 shrink-0" />
-          <div className="flex-1 space-y-2">
-            <div className="flex items-center justify-between">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-5 w-10" />
+        <div className="flex items-start gap-2.5 sm:gap-3.5 mb-3 sm:mb-4">
+          <Skeleton className="h-10 w-10 sm:h-12 sm:w-12 shrink-0" />
+          <div className="flex-1 space-y-2 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <Skeleton className="h-4 w-24 sm:w-32" />
+              <Skeleton className="h-5 w-10 shrink-0" />
             </div>
             <Skeleton className="h-3 w-full" />
             <Skeleton className="h-3 w-3/4" />
@@ -29,20 +29,20 @@ export function ModCardSkeleton({ index = 0 }: { index?: number }) {
         </div>
 
         {/* Why suggested */}
-        <Skeleton className="h-10 w-full mb-4" />
+        <Skeleton className="h-10 w-full mb-3 sm:mb-4" />
 
         {/* Stats */}
-        <div className="flex gap-3 mb-4">
-          <Skeleton className="h-3 w-16" />
-          <Skeleton className="h-3 w-20" />
-          <Skeleton className="h-3 w-24" />
+        <div className="flex gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
+          <Skeleton className="h-3 w-14 sm:w-16" />
+          <Skeleton className="h-3 w-16 sm:w-20" />
+          <Skeleton className="hidden sm:block h-3 w-24" />
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2">
+        <div className="flex gap-1.5 sm:gap-2">
           <Skeleton className="h-8 flex-1" />
-          <Skeleton className="h-8 w-20" />
-          <Skeleton className="h-8 w-24" />
+          <Skeleton className="h-8 w-10 sm:w-20" />
+          <Skeleton className="h-8 w-10 sm:w-24" />
         </div>
       </div>
     </motion.div>

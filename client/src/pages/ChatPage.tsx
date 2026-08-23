@@ -153,50 +153,51 @@ export default function ChatPage() {
       </AnimatePresence>
 
       {/* Chat header */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border/30 shrink-0">
-        <div className="flex items-center gap-2">            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/')}
-              className="h-7 w-7 p-0 gap-0"
-              aria-label="Back to home"
-            >
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2 border-b border-border/30 shrink-0">
+        <div className="flex items-center gap-2 min-w-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/')}
+            className="h-7 w-7 p-0 gap-0 shrink-0"
+            aria-label="Back to home"
+          >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground truncate">
             {mods.length > 0 && (
               <span className="inline-flex items-center gap-1.5">
-                <Layers className="h-3 w-3" />
-                <span className="text-foreground font-medium">{mods.length}</span> mods found
+                <Layers className="h-3 w-3 shrink-0" />
+                <span className="text-foreground font-medium">{mods.length}</span> mods
               </span>
             )}
           </span>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 shrink-0">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowHistory(!showHistory)}
-            className="h-7 px-2 text-xs gap-1"
+            className="h-7 px-1.5 sm:px-2 text-[10px] sm:text-xs gap-1"
           >
             <Clock className="h-3 w-3" />
-            History
+            <span className="hidden sm:inline">History</span>
           </Button>
           {messages.length > 0 && (
             <Button
               variant="ghost"
               size="sm"
               onClick={handleClearChat}
-              className="h-7 px-2 text-xs gap-1 text-muted-foreground"
+              className="h-7 px-1.5 sm:px-2 text-[10px] sm:text-xs gap-1 text-muted-foreground"
             >
               <RotateCcw className="h-3 w-3" />
-              New Chat
+              <span className="hidden sm:inline">New Chat</span>
             </Button>
           )}
         </div>
       </div>
 
-      <ScrollArea className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 pb-24">
+      <ScrollArea className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6">
         <div className="max-w-3xl mx-auto py-6 space-y-5">
           {/* Search History Panel */}
           <AnimatePresence>
@@ -348,8 +349,8 @@ export default function ChatPage() {
         </div>
       </ScrollArea>
 
-      {/* Input - fixed at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-border/50 bg-background/80 backdrop-blur-xl p-4">
+      {/* Input - stays at bottom via flex layout */}
+      <div className="shrink-0 border-t border-border/50 bg-background/80 backdrop-blur-xl p-3 sm:p-4">
         <form onSubmit={handleSend} className="max-w-3xl mx-auto">
           <div className="relative">
             <Textarea
@@ -386,7 +387,7 @@ export default function ChatPage() {
   // ===== Mods Panel (shared between mobile & desktop) =====
   const modsPanel = (
     <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-background/30 w-full">
-      <div className="p-3 sm:p-6">
+      <div className="p-2 sm:p-4 md:p-6">
         <AnimatePresence>
           {analysis && (
             <motion.div
@@ -418,30 +419,30 @@ export default function ChatPage() {
         {mods.length > 0 ? (
           <>
             <div className="flex items-center justify-between gap-2 mb-4">
-              <div className="flex items-center gap-2">
-                <Layers className="h-4 w-4 text-primary" />
-                <span className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 min-w-0">
+                <Layers className="h-4 w-4 text-primary shrink-0" />
+                <span className="text-xs sm:text-sm text-muted-foreground">
                   <span className="text-foreground font-medium">{mods.length}</span> matching mods
                 </span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 shrink-0">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => { selectAll(); toast(`All ${mods.length} mods selected`, 'success') }}
-                  className="h-7 text-xs gap-1.5 border-border/40"
+                  className="h-7 text-[10px] sm:text-xs gap-1 sm:gap-1.5 border-border/40 px-2 sm:px-3"
                 >
                   <CheckSquare className="h-3 w-3" />
-                  Select All
+                  <span>Select All</span>
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => { deselectAll(); toast('Cart cleared', 'info') }}
-                  className="h-7 text-xs gap-1.5 text-muted-foreground"
+                  className="h-7 text-[10px] sm:text-xs gap-1 sm:gap-1.5 text-muted-foreground px-2 sm:px-3"
                 >
                   <Square className="h-3 w-3" />
-                  Clear All
+                  <span>Clear All</span>
                 </Button>
               </div>
             </div>
@@ -475,7 +476,7 @@ export default function ChatPage() {
   )
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden relative" style={{ height: 'calc(100dvh - 4rem)' }}>
+    <div className="flex-1 flex flex-col overflow-hidden min-h-0">
       {/* Desktop: side by side */}
       <div className="hidden lg:flex flex-1 min-h-0">
         <div className="flex-1 flex flex-col min-h-0 border-r border-border/50">
@@ -532,7 +533,7 @@ export default function ChatPage() {
       </div>
 
       {/* Mobile toggle bubble */}
-      <div className="lg:hidden fixed bottom-24 right-4 z-40">
+      <div className="lg:hidden fixed bottom-20 right-4 z-40">
         <AnimatePresence>
           {mods.length > 0 && (
             <motion.button

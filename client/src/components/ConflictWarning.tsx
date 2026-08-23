@@ -24,26 +24,26 @@ export default function ConflictWarning() {
         exit={{ opacity: 0, height: 0 }}
         className="mb-4 mt-4"
       >
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <ShieldAlert className="h-4 w-4 text-amber-400" />
-            <span className="text-sm font-medium text-amber-300">Mod Conflicts Detected</span>
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 sm:p-4">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+            <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" />
+            <span className="text-xs sm:text-sm font-medium text-amber-300">Mod Conflicts Detected</span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {activeConflicts.map((group) => (
               <div
                 key={group.groupName}
-                className="rounded-lg bg-background/50 border border-amber-500/20 p-3"
+                className="rounded-lg bg-background/50 border border-amber-500/20 p-2.5 sm:p-3"
               >
-                <div className="flex items-center gap-2 mb-1.5">
-                  <AlertTriangle className="h-3 w-3 text-amber-400" />
-                  <span className="text-xs font-semibold text-amber-300">{group.groupName}</span>
+                <div className="flex items-center gap-2 mb-1">
+                  <AlertTriangle className="h-3 w-3 text-amber-400 shrink-0" />
+                  <span className="text-[11px] sm:text-xs font-semibold text-amber-300 truncate">{group.groupName}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">{group.description}</p>
-                <div className="flex flex-wrap gap-1.5">
+                <p className="text-[11px] sm:text-xs text-muted-foreground mb-1.5 sm:mb-2 line-clamp-2">{group.description}</p>
+                <div className="flex flex-wrap gap-1 sm:gap-1.5">
                   {group.mods.map((slug) => (
-                    <Badge key={slug} variant="warning" className="text-[10px]">
+                    <Badge key={slug} variant="warning" className="text-[9px] sm:text-[10px]">
                       {slug}
                     </Badge>
                   ))}
